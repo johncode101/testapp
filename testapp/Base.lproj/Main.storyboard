@@ -11,7 +11,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PickerView" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="testapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -147,7 +147,9 @@
                     </view>
                     <connections>
                         <outlet property="albumButton" destination="hze-6Z-vuN" id="TJB-BB-XSA"/>
+                        <outlet property="bottomButtonHolder" destination="h4Z-5H-3x0" id="pjj-FW-Lgl"/>
                         <outlet property="bottomTextField" destination="FxK-g5-3O0" id="PAN-je-Ba4"/>
+                        <outlet property="buttonHolder" destination="gtZ-EN-84R" id="PPD-xM-Ggl"/>
                         <outlet property="cameraButton" destination="Inf-qf-xbo" id="BNg-PZ-5Ft"/>
                         <outlet property="cancelButton" destination="Q8k-w4-Cjx" id="75G-I8-8Ox"/>
                         <outlet property="imagePickerView" destination="e9B-Q2-M3d" id="74b-hS-hOL"/>

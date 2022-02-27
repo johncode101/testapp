@@ -16,6 +16,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var albumButton: UIButton!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
+    @IBOutlet weak var buttonHolder: UIView!
+    @IBOutlet weak var bottomButtonHolder: UIView!
     
     
     
@@ -117,5 +119,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @objc func keyboardWillHide(_ notification: Notification) {
             self.view.frame.origin.y = 0
         }
+    
+    func generateMemeImage() -> UIImage {
+        // Hide toolbar and navigation bar to avoid inclusion in saved image
+        self.buttonHolder.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        self.view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memeImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        // Restore toolbar and navigation bar
+        self.buttonHolder.isHidden = false
+        self.navigationController?.isNavigationBarHidden = false
+        
+        return memeImage
+    }
+    
+    func save() -> Meme {
+        // Creates the meme
+        
+        let meme = Meme(topText: topTextField.text?, bottomText: bottomTextField.text?, originalImage: imageView.image?, memeImage: generateMemeImage())
+    }
+
 }
 
