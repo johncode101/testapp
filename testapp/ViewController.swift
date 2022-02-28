@@ -58,7 +58,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSAttributedString.Key.strokeColor: UIColor.black,
         NSAttributedString.Key.foregroundColor: UIColor.white,
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: 1.0 ]
+        NSAttributedString.Key.strokeWidth: -1.0 ]
     
     @IBAction func shareImage(_ sender: UIButton) {
         
@@ -66,7 +66,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.present(shareButton, animated: true, completion: nil)
     }
     
-    @IBAction func cancelImage(_ sender: Any) {
+    @IBAction func cancelImage(sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
 
     }
 
