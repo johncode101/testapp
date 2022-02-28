@@ -40,6 +40,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        shareButton.isEnabled = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,10 +60,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
         NSAttributedString.Key.strokeWidth: 1.0 ]
     
-    @IBAction func shareImage(_ sender: Any) {
+    @IBAction func shareImage(_ sender: UIButton) {
+        
+        let shareButton = UIActivityViewController(activityItems: [self.imagePickerView.image, self.topTextField.text, self.bottomTextField.text], applicationActivities: nil)
+        self.present(shareButton, animated: true, completion: nil)
     }
     
     @IBAction func cancelImage(_ sender: Any) {
+
     }
 
 
@@ -86,6 +91,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let image = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
             imagePickerView.image = image
             imagePickerView.contentMode = .scaleAspectFill
+            shareButton.isEnabled = true
+        } else {
+            shareButton.isEnabled = false
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -120,28 +128,38 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.view.frame.origin.y = 0
         }
     
-    func generateMemeImage() -> UIImage {
-        // Hide toolbar and navigation bar to avoid inclusion in saved image
-        self.buttonHolder.isHidden = true
-        self.navigationController?.isNavigationBarHidden = true
-        
+    func generateMemedImage() -> UIImage {
+
+        // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
-        self.view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memeImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
-        // Restore toolbar and navigation bar
-        self.buttonHolder.isHidden = false
-        self.navigationController?.isNavigationBarHidden = false
-        
-        return memeImage
+
+        return memedImage
     }
-    
+
     func save() -> Meme {
         // Creates the meme
         
-        let meme = Meme(topText: topTextField.text?, bottomText: bottomTextField.text?, originalImage: imageView.image?, memeImage: generateMemeImage())
+        
+        let meme = Meme(toptext: topTextField.text ?? "", bottomtext: bottomTextField.text ?? "", originalImage: imagePickerView.image ?? UIImage(), memeImage: generateMemedImage())
+        
+        let activityView = UIActivityViewController(activityItems: [meme.memeImage], applicationActivities: nil);
+                activityView.completionWithItemsHandler = {
+                  (activity, success, items, error) in
+                    if(success && error == nil){
+                        //Do Work
+                        self.dismiss(animated: true, completion: nil);
+                    }
+                    else if (error != nil){
+                        //log the error
+                    }
+                };
+        
+        return meme
     }
-
+    
+    
 }
 
