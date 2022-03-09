@@ -28,12 +28,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.textAlignment = .center
-        topTextField.text = "Top"
-        topTextField.delegate = self
-        bottomTextField.textAlignment = .center
-        bottomTextField.text = "Bottom"
-        bottomTextField.delegate = self
+        setupTextField(tf: topTextField, text: "TOP")
+        setupTextField(tf: bottomTextField, text: "Bottom")
         
     }
     
@@ -54,6 +50,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         textField.endEditing(true)
     }
     
+    func setupTextField(tf: UITextField, text: String) {
+        tf.defaultTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.white,
+            NSAttributedString.Key.strokeColor : UIColor.black,
+            NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: -4.0,
+        ]
+        tf.textColor = UIColor.white
+        tf.tintColor = UIColor.white
+        tf.textAlignment = .center
+        tf.text = text
+        tf.delegate = self
+    }
+
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.strokeColor: UIColor.black,
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -114,8 +124,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
-
-        self.view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomTextField.isFirstResponder {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        if bottomTextField.isFirstResponder {
+            view.frame.origin.y = 0
+        }
     }
 
     func getKeyboardHeight(_ notification: Notification) -> CGFloat {
@@ -124,10 +141,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
         return keyboardSize.cgRectValue.height
     }
-    
-    @objc func keyboardWillHide(_ notification: Notification) {
-            self.view.frame.origin.y = 0
-        }
     
     func generateMemedImage() -> UIImage {
 
@@ -142,7 +155,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     func save() -> Meme {
         // Creates the meme
-        
         
         let meme = Meme(toptext: topTextField.text ?? "", bottomtext: bottomTextField.text ?? "", originalImage: imagePickerView.image ?? UIImage(), memeImage: generateMemedImage())
         
