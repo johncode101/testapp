@@ -21,9 +21,9 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSPhotoLibraryUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
 	<string></string>
-	<key>NSCalendarsUsageDescription</key>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
 </dict>
 </plist>

@@ -158,6 +158,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         let meme = Meme(toptext: topTextField.text ?? "", bottomtext: bottomTextField.text ?? "", originalImage: imagePickerView.image ?? UIImage(), memeImage: generateMemedImage())
         
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
+
+        
         let activityView = UIActivityViewController(activityItems: [meme.memeImage], applicationActivities: nil);
                 activityView.completionWithItemsHandler = {
                   (activity, success, items, error) in
