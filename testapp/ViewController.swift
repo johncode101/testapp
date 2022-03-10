@@ -25,9 +25,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         subscribeToKeyboardNotifications()
         unsubscribeFromKeyboardNotifications()
-        
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
         setupTextField(tf: topTextField, text: "TOP")
         setupTextField(tf: bottomTextField, text: "Bottom")
         
@@ -63,12 +60,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         tf.text = text
         tf.delegate = self
     }
-
-    let memeTextAttributes: [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.strokeColor: UIColor.black,
-        NSAttributedString.Key.foregroundColor: UIColor.white,
-        NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: -1.0 ]
     
     @IBAction func shareImage(_ sender: UIButton) {
         
@@ -96,6 +87,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(imagePicker, animated: true, completion: nil)
         dismiss(animated: true, completion: nil)
     }
+    
+    func chooseImageFromCameraOrPhoto(source: UIImagePickerController.SourceType) {
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        pickerController.allowsEditing = true
+        pickerController.sourceType = source
+        present(pickerController, animated: true, completion: nil)
+    }
+
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
